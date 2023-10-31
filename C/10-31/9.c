@@ -5,4 +5,6 @@ main(){
 	scanf("%d", &num);
 	if(num >= 60 && num <= 70)
 		printf("%d", num);
+	else
+		printf("不在分数范围内\n");
 }

@@ -5,4 +5,6 @@ main(){
 	scanf("%d", &num);
 	if(num % 2 == 0)
 		printf("%d", num);
+	else
+		printf("输入的数字不能被2整除\n");
 }

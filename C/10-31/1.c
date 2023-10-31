@@ -5,4 +5,6 @@ main(){
 	scanf("%d", &num);
 	if(num>=0)
 		printf("%d", num);
+	else
+		printf("输入的整数不是非负数\n");
 }

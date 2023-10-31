@@ -5,4 +5,6 @@ main(){
 	scanf("%c", &ch);
 	if(ch >= 'A' && ch <= 'Z')
 		printf("%c", ch);
+	else
+		printf("输入的不是大写字母\n");
 }
