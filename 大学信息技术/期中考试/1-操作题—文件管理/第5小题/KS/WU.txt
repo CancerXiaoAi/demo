@@ -1,0 +1,3 @@
+安装 Windows UPDATE
+
+若要让 Windows 在可获得重要UPDATE时安装这些UPDATE，请启用自动UPDATE。重要UPDATE可以让用户受益匪浅，例如，获得更高的安全性和可靠性。也可以将 Windows 设置为自动安装推荐的UPDATE，这些UPDATE可以处理非关键性问题，并帮助增强您的计算体验。可选UPDATE不会自动下载或安装。若要了解有关 Microsoft 发布的UPDATE类型的详细信息，请转到 Microsoft 帮助和支持网站上的这篇知识库文章（可能为英文网页）。
