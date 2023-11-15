@@ -1,3 +1,3 @@
 git add .
 git commit -m 'file'
-git push
+echo "cancerai\nxuJinGuo1072137273\n" | git push
