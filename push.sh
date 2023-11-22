@@ -1,4 +1,5 @@
 #!/bin/sh
+git init
 git config --global user.name "cancerai"
 git config --global user.email "cancerai@163.com"
 git remote rm origin
