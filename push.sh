@@ -7,4 +7,4 @@ git remote rm origin  >> log
 git remote add origin https://gitee.com/cancerai/demo  >> log
 git add .  >> log
 git commit -m "file"  >> log
-git push origin master:master  | grep * >> log
+git push origin master:master >> log
