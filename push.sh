@@ -1,4 +1,5 @@
 #!/bin/sh
+echo "" > log
 git init >> log
 git config --global user.name "cancerai"  >> log
 git config --global user.email "cancerai@163.com"  >> log
