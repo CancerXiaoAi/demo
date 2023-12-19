@@ -1,6 +1,6 @@
 #include<stdio.h>
 main () {
-	int sum (float a, float b);
+	float sum (float a, float b);
 	float a, b;
 	printf("输入实数a: ");
 	scanf("%f", &a);
@@ -8,6 +8,6 @@ main () {
 	scanf("%f", &b);
 	printf("两数之和是: %f", sum(a, b));
 }
-int sum (float a, float b) {
+float sum (float a, float b) {
 	return a + b;
 }

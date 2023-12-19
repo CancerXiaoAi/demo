@@ -7,8 +7,8 @@ main () {
 	print_star();
 }
 void print_star () {
-	printf("******************");
+	printf("******************\n");
 }
 void print_message () {
-	printf("My first C program!");
+	printf("My first C program!\n");
 }
