@@ -4,8 +4,8 @@ main () {
 	int sum (int s, int re);
 	int a, b, s=0,re, flag=0,i;
 	for(i=0;i<10;i++){
-		a=rand();
-		b=rand();
+		a=rand()%100+1;
+		b=rand()%100+1;
 		re=a+b;
 		printf("%d+%d= ",a ,b);
 		scanf("%d", &s);
