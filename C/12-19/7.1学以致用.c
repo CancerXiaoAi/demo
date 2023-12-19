@@ -1,5 +1,7 @@
 #include<stdio.h>
 main () {
+	void print_star ();
+	void print_message ();
 	print_star();
 	print_message();
 	print_star();

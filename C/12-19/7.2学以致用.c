@@ -1,5 +1,6 @@
 #include<stdio.h>
 main () {
+	int sum (float a, float b);
 	float a, b;
 	printf("ÊäÈëÊµÊıa: ");
 	scanf("%f", &a);

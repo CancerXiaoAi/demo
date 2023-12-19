@@ -1,5 +1,6 @@
 #include<stdio.h>
 main () {
+	int max (int a, int b);
 	int a, b;
 	printf("ÊäÈëÕûÊıa: ");
 	scanf("%d", &a);

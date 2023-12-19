@@ -1,5 +1,6 @@
 #include<stdio.h>
 main () {
+	void print_star ();
 	print_star();
 	print_star();
 }
