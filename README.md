@@ -11,4 +11,4 @@ CancerAi (小爱)
 
 
 #### 声明
-1.  Gitee 官方博客 [小爱的个人博客](https://gitee.com/cancerai)
+1.  CancerAi的个人地址 [https://gitee.com/cancerai](https://gitee.com/cancerai)
