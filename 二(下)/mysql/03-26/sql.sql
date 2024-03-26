@@ -13,6 +13,9 @@ create table user(
     name char(10) not null
 );
 
+-- insert data
+insert into user (number,name) values("001","CancerAi");
+
 -- delete the table
 drop table user;
 
