@@ -9,12 +9,12 @@ use school;
 
 -- create new table
 create table user(
-    number char(10) not null,
+    number int(10) not null,
     name char(10) not null
 );
 
 -- insert data
-insert into user (number,name) values("001","CancerAi");
+insert into user (number,name) values(1,"CancerAi");
 
 -- delete the table
 drop table user;
