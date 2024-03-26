@@ -1,5 +1,5 @@
 -- delete database when it not exist.
-drop database school if exist;
+drop database if exists school;
 
 -- create new database
 create database school;
