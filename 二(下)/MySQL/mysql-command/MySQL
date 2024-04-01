@@ -1,0 +1,93 @@
+MySQL结构：
+	数据库 -> 数据表 -> 字段 -> 数据
+	
+MySQL语言类型:
+    DQL (Data Query Language) 数据查询语言
+    DCL (Data Control Language) 数据控制语言
+    DML (Data Manipulation Language) 数据操作语言
+    DDL (Data Definition Language) 数据定义语言
+    TCL (Transaction Control Language) 事务控制语言
+    
+-------------------------------------------------------
+数据库的增删改查
+	增: create database 数据库名字;
+	删: drop database 数据库名字;
+	改: 
+        名字: rename database 旧名字 to 新名字;
+        属性: alter database 数据库名字 [default] character set 默认字符集名 [default] collate 默认校对规则;
+	查: show databases;
+	
+-------------------------------------------------------
+数据表的增删改查
+	增: create table 表名(
+            字段名 类型 字段属性,
+            字段名 类型 字段属性,
+            [primary key(字段名,字段名),]
+            [foreign key (字段名,字段名)]
+            );
+	删: drop table 表名;
+	改: rename table 旧表名 to 新表名;
+	查: show tables;
+	
+-------------------------------------------------------
+字段的增删改查
+	增: alter table 表名 add 字段名 字段属性;
+	删: alter table 表名 drop 字段名;
+	改: alter table 表名 modify 字段名 属性;
+	查: desc 表名;
+	
+-------------------------------------------------------
+数据的增删改查
+	增: 
+	    指定字段顺序插入: insert into 表名 (字段名) values(字段所对应的值);
+	    根据字段顺序插入: insert into 表名 values(字段所对应的值);
+	删: 
+	    删除全部: delete from 表名;
+	    条件删除: delete from 表名 字段名 where 匹配条件删除;
+	改: update 表名 set 字段名 = 值,字段名 = 值 where 匹配条件修改;
+	查: 
+	    普通查询: select 字段名 from 表名;
+	    条件查询: select 字段名 from 表名 where 匹配条件;
+	    分组查询: select 字段名 from 表名 [where 匹配条件] group by 要分组的字段名 [having 分组后的过滤条件];
+	    排序查询: select 字段名 from 表名 order by 字段 排序方式, 字段 排序方式;
+	    分页查询: select 字段名 from 表名 limit 起始索引, 查询记录数;
+	    联合查询: select 字段名 from 表名 union select 字段名 from 表名;
+	    完整语法: select 字段名 from 表名 where 匹配条件 group by 要分组的字段名 having 分组后的过滤条件 order by 字段 排序方式 limit 起始索引, 查询记录数;
+	    执行顺序: from -> where -> group by -> having -> select -> order by -> limit
+
+-------------------------------------------------------
+用户的增删改查
+	增: create user "用户名"@"主机名" identified by "用户密码";
+	删: drop user "用户名"@"主机名";
+	改: alter user "用户名"@"主机名" identified by "用户密码";
+	查: 
+	    普通查询: select * from mysql.user;
+	    以列表方式输出: select * from mysql.user\G;
+
+-------------------------------------------------------
+事务的增删改查
+    增:
+        开启事务: begin;
+        提交事务: commit;
+    删(回滚事务): rollback;
+    改:
+        事务名字: set transaction name "名字";
+        隔离级别: set transaction isolation level 级别名字;
+        读写模式: set transaction 模式名;
+        作用范围: set 作用范围名 transaction isolation level 级别名字;
+    查: select * from INFORMATION_SCHEMA.INNODB_TRX;
+        
+-------------------------------------------------------
+权限的增删改查
+    增: 
+        增加权限: grant 权限名 on 数据库名.表名 to "用户名"@"主机名" [identified by "密码"];
+        刷新权限: flush privileges;
+    删: 
+        删除权限: revoke 权限名 on 表名 from "用户名"@"主机名";
+        刷新权限: flush privileges;
+    改: 
+        修改权限: grant 权限名 on 数据库名.表名 to "用户名"@"主机名" [identified by "密码"];
+        刷新权限: flush privileges;
+    查: show grants for "用户名"@"主机名";
+
+-------------------------------------------------------
