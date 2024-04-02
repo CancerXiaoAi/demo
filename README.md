@@ -7,4 +7,4 @@
 CancerAi (小爱)
 
 ## 声明
-1.  CancerAi的个人地址: [https://gitee.com/cancerai](https://gitee.com/cancerai)
+CancerAi的个人地址: [https://gitee.com/cancerai](https://gitee.com/cancerai)
