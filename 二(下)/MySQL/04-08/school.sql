@@ -1,0 +1,5 @@
+create database school;
+
+use school;
+
+alter table student add foreign key student (Ñ§ºÅ) references score (Ñ§ºÅ) on update cascade;

@@ -1,0 +1,63 @@
+>>> 适用于Windows10/11 <<<
+
+-- 深入了解windows系统盘的内容，包括：
+    Progam Files目录
+    Program Files(x86)目录
+    Windows/Users目录
+    Windows/system32目录
+
+-- windows系统高级操作，包括：
+    虚拟桌面切换
+    用户，用户组管理
+    文件，目录的权限管理
+    cmd/PowerShell 常用命令
+    内存分页操作
+    启动项配置
+    了解注册表
+    
+-- 网络相关知识，包括：
+    了解 ip地址，子网掩码，网关 的概念
+    了解 静态ip，动态ip，内网ip，公网ip 概念
+    使用 ping 命令检查网络状态
+    会用windows系统配置 静态ip
+    登录进路由器配置路由器
+    
+-- 计算机硬件运行流程
+
+-- 熟悉硬盘分区相关概念，包括：
+    熟悉 主分区，活动分区，逻辑分区，扩展分区 的概念
+    了解分区常见格式
+    
+-- windows中分区的基本操作，包括：
+    添加分区
+    删除分区
+    修改分区
+    合并分区
+
+-- 知道 BIOS 是什么，以及 BIOS 的常用操作
+
+-- 知道 PE 是什么，并知道 iso 文件是什么
+
+-- 熟悉 Ventoy 基本用法
+
+-- 熟悉 利用空硬盘安装windows操作系统 流程，包括：
+    制作Ventoy多引导u盘
+    获取Windows镜像（使用MSDN网站）
+    如何分配合适的分区
+    windows安装流程
+
+-- 虚拟机的常用操作（使用VMware workstation），包括：
+    创建虚拟机
+    删除虚拟机
+    vmware tool概念
+    配置虚拟机
+    备份和还原虚拟机
+    
+-- 使用 git 进行文件管理，包括：
+    git概念
+    git三大区域（工作区，暂存区，版本区）
+    git基本命令（add，config，commit，push）
+    版本回退
+    分支操作
+    远程仓库操作（GitHub或Gitee等）
+    
