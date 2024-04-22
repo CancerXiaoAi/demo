@@ -1,18 +1,18 @@
 1:
-create database stuact_¿¼ÉúºÅ;
+create database stuact_è€ƒç”Ÿå·;
 
 2:
-use stuact_¿¼ÉúºÅ;
-create table s_¿¼ÉúºÅ(
+use stuact_è€ƒç”Ÿå·;
+create table s_è€ƒç”Ÿå·(
 	sno char(8) primary key,
 	sname varchar(10)
 );
-create table act_¿¼ÉúºÅ(
+create table act_è€ƒç”Ÿå·(
 	ano char(10) primary key,
 	aname varchar(100),
 	adepart varchar(20)
 );
-create table sa_¿¼ÉúºÅ(
+create table sa_è€ƒç”Ÿå·(
 	sno char(8),
 	ano char(10),
 	score real,
@@ -20,18 +20,18 @@ create table sa_¿¼ÉúºÅ(
 );
 
 3:
-insert into s_¿¼ÉúºÅ (sno,sname) values("10000111","ÁõÑó");
-insert into s_¿¼ÉúºÅ (sno,sname) values("10000265","ÁÖ³¿");
-insert into act_¿¼ÉúºÅ (ano,aname,adepart) values("10011001","°®¹ú½ÌÓý","Ñ§Éú´¦");
-insert into act_¿¼ÉúºÅ (ano,aname,adepart) values("10021002","ÐÂÉú¾üÑµ","Ñ§Éú´¦");
-insert into act_¿¼ÉúºÅ (ano,aname,adepart) values("10031003","ÉçÍÅ»î¶¯","ÍÅÎ¯");
-insert into sa_¿¼ÉúºÅ (fno,ano,score) values("10000111","10011001",87);
-insert into sa_¿¼ÉúºÅ (fno,ano,score) values("10000111","10031003",79);
-insert into sa_¿¼ÉúºÅ (fno,ano,score) values("10000265","10011001",70);
-insert into sa_¿¼ÉúºÅ (fno,ano,score) values("10000265","10021002",83);
-insert into sa_¿¼ÉúºÅ (fno,ano,score) values("10000265","10031003",97);
-insert into sa_¿¼ÉúºÅ (fno,ano,score) values("10000360","10011001",55);
+insert into s_è€ƒç”Ÿå· (sno,sname) values("10000111","åˆ˜æ´‹");
+insert into s_è€ƒç”Ÿå· (sno,sname) values("10000265","æž—æ™¨");
+insert into act_è€ƒç”Ÿå· (ano,aname,adepart) values("10011001","çˆ±å›½æ•™è‚²","å­¦ç”Ÿå¤„");
+insert into act_è€ƒç”Ÿå· (ano,aname,adepart) values("10021002","æ–°ç”Ÿå†›è®­","å­¦ç”Ÿå¤„");
+insert into act_è€ƒç”Ÿå· (ano,aname,adepart) values("10031003","ç¤¾å›¢æ´»åŠ¨","å›¢å§”");
+insert into sa_è€ƒç”Ÿå· (sno,ano,score) values("10000111","10011001",87);
+insert into sa_è€ƒç”Ÿå· (sno,ano,score) values("10000111","10031003",79);
+insert into sa_è€ƒç”Ÿå· (sno,ano,score) values("10000265","10011001",70);
+insert into sa_è€ƒç”Ÿå· (sno,ano,score) values("10000265","10021002",83);
+insert into sa_è€ƒç”Ÿå· (sno,ano,score) values("10000265","10031003",97);
+insert into sa_è€ƒç”Ÿå· (sno,ano,score) values("10000360","10011001",55);
 
 4:
-alter table sa_¿¼ÉúºÅ add foreign key sa_¿¼ÉúºÅ (sno) references s_¿¼ÉúºÅ (sno) on update cascade on delete cascade;
-alter table sa_¿¼ÉúºÅ add check(score>=55 and score<=100);
+alter table sa_è€ƒç”Ÿå· add foreign key sa_è€ƒç”Ÿå· (sno) references s_è€ƒç”Ÿå· (sno) on update cascade on delete cascade;
+alter table sa_è€ƒç”Ÿå· add check(score>=55 and score<=100);
