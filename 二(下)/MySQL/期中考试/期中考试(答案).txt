@@ -38,8 +38,7 @@ insert into sa_考生号 (sno,ano,score) values("10000111","10031003",79);
 insert into sa_考生号 (sno,ano,score) values("10000265","10011001",70);
 insert into sa_考生号 (sno,ano,score) values("10000265","10021002",83);
 insert into sa_考生号 (sno,ano,score) values("10000265","10031003",97);
-insert into sa_考生号 (sno,ano,score) values("10000360","10011001",55);
 
 4:
-alter table sa_考生号 add foreign key sa_考生号 (sno) references s_考生号 (sno) on update cascade on delete cascade;
+alter table sa_考生号 add foreign key (sno) references s_考生号 (sno) on update cascade on delete cascade;
 alter table sa_考生号 add check(score>=55 and score<=100);
