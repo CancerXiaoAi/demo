@@ -1,5 +1,5 @@
 create database stuact_考生号;
-
+ 
 use stuact_考生号;
 create table s_考生号(
 	sno char(8) not null primary key,
