@@ -10,7 +10,7 @@
     虚拟桌面切换
     用户，用户组管理
     文件，目录的权限管理
-    cmd/PowerShell 常用命令
+   cmd/PowerShell 常用命令
     内存分页操作
     启动项配置
     了解注册表
@@ -49,11 +49,11 @@
 -- 虚拟机的常用操作（使用VMware workstation），包括：
     创建虚拟机
     删除虚拟机
-    vmware tool概念
+   vmware tool概念
     配置虚拟机
     备份和还原虚拟机
     
--- 使用 git 进行文件管理，包括：
+-- (非必须)使用 git 进行文件管理，包括：
     git概念
     git三大区域（工作区，暂存区，版本区）
     git基本命令（add，config，commit，push）
