@@ -8,30 +8,33 @@ MySQL语言类型:
     DDL (Data Definition Language) 数据定义语言
     TCL (Transaction Control Language) 事务控制语言
     
+MySQL基础语法:
+版本: MySQL-8
 -------------------------------------------------------
 数据库的增删改查
-	增: create database 数据库名字;
-	删: drop database 数据库名字;
+	增: create database [if not exists] 数据库名 [[default] character set 字符集名 | [default] collate 规则名];
+	删: drop database [if exists] 数据库名;
 	改: 
         名字: rename database 旧名字 to 新名字;
-        属性: alter database 数据库名字 [default] character set 默认字符集名 [default] collate 默认校对规则;
+        属性: alter database 数据库名 [[default] character set 字符集名 | [default] collate 规则名];
 	查: show databases;
 	
 -------------------------------------------------------
 数据表的增删改查
-	增: create table 表名(
+	增: create table [if not exists] 表名(
             字段名 类型 字段属性,
-            字段名 类型 字段属性,
-            [primary key(字段名,字段名),]
-            [foreign key (字段名) references 表名(字段名) on update 操作 on delete 操作]
-            );
+            [字段名 类型 字段属性,]
+            [primary key(字段名[,字段名]),]
+            [foreign key (字段名) references 表名(字段名) on update | delete 操作 [on update | delete 操作],]
+            [check (表达式)]
+            )[engine = 存储引擎];
 	删: drop table 表名;
 	改: rename table 旧表名 to 新表名;
 	查: show tables;
 	
 -------------------------------------------------------
 字段的增删改查
-	增: alter table 表名 add 字段名 字段属性;
+	增: alter [ignore] table 表名 add 字段名 字段属性;
 	删: alter table 表名 drop 字段名;
 	改: alter table 表名 modify 字段名 属性;
 	查: desc 表名;
@@ -39,11 +42,9 @@ MySQL语言类型:
 -------------------------------------------------------
 数据的增删改查
 	增: 
-	    指定字段顺序插入: insert into 表名 (字段名) values(字段所对应的值);
-	    根据字段顺序插入: insert into 表名 values(字段所对应的值);
+	    insert into 表名 [(字段名)[, 字段名]] values(字段所对应的值);
 	删: 
-	    删除全部: delete from 表名;
-	    条件删除: delete from 表名 字段名 where 匹配条件删除;
+	    delete from 表名 字段名 [where 匹配条件删除];
 	改: update 表名 set 字段名 = 值,字段名 = 值 where 匹配条件修改;
 	查: 
 	    普通查询: select 字段名 from 表名;
