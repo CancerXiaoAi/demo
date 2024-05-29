@@ -1,0 +1,9 @@
+# programe compiled file
+.out/
+
+# text editor templete file
+.swap
+*~
+
+# macOS
+.DS_Store/
