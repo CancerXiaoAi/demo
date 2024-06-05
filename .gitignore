@@ -1,5 +1,7 @@
 # programe compiled file
 .out/
+*.c~
+*.o
 
 # text editor templete file
 .swap
@@ -7,3 +9,6 @@
 
 # macOS
 .DS_Store/
+
+# Linked file
+*.lnk
