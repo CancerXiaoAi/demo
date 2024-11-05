@@ -1,0 +1,54 @@
+1.创建数据库：create database + 数据库名字; 举例:create database schooldb; 在打命令的时候请注意区分中文和英文符号
+
+2.创建表格：
+(1)use + 表名；举例：use schooldb; 
+(2)create table class（班级编号 char(10) not null primary key,学号 char(10) not null default '计算机',班级数量 int(5)，创建时间 date）； default就是默认值的意思 ，primary key意思是主键 
+复合主键 ：create table class（班级编号 char(10) not null ,学号 char(10) not null default '计算机',班级数量 int(5)，创建时间 date； primary key(班级编号，学号)）；
+                                                                                    注意这些只是举例，考试时请随机应变！！！！！
+
+3.如果需要删除命令是：drop table if exists 表名； 显示数据库中建立的数据表文件和数据库，数据表内容,各列信息在已经use的前提下打入命令：show datebases; show tables;describe 表名； 查看单列信息：desc book 图书编号；
+4.添加主键在未设定主键的情况下，比如忘了在创建表格的时候添加 举例：
+alter table book
+add primary key(图书编号)；
+删除主键：
+alter table book
+drop primary key;
+
+5.完整性约束foreign key
+alter table sell
+add foreign key (用户号)
+references member (用户号)
+on delete cascade
+on update cascade;
+
+6.创建表student按照要求只能包含下班男女（check）
+create table student(学号 char(10) not null,性别 char(2) not null ,check (性别 in ('男'，'女')));
+出生日期>2001-01-01:
+create table student(学号 char(10) not null,出生日期 date not null, check  (出生日期>'2001-01-01'));
+
+7.输入内容insert into product  values('内容','内容') 有几列就输入对应数量的内容或者简单的方法
+insert into product（'列名','列名'）  values('内容','内容')；
+
+8.在原来数据后面加省或市：
+update student 
+set 地区=rtrim(地区)+'省或市';
+
+9.set语句添加部分信息
+insert into student set 学号='2024502001',姓名='林立',性别='女';
+
+10.将王一敏的出生日期改为'2005-02-10',班级编号改为'AC1302'
+update student 
+set 出生日期='2005-02-10',班级编号='AC1302'
+where 姓名='王一敏',学号='2013110103';考虑到有学号这个东西所以添加了一个学号
+
+11.删除出生日期在2005年前出生的人:delete from student where 出生日期<'2005-01-01';
+
+12.搜索全表：select * from student; 定义列表别名：select 姓名 as name from student;
+单表查询全体学生的姓名和年龄：
+select 姓名,year(getdate())-year(出生日期) from student;
+前置课为空的课程名和学期：select 课程名,学期 from course where 前置课=round is null;
+查询姓什么的人：select * from student where 姓名 like '王%'；
+按性别统计用户总数:select 性别, count(*) from student group by 性别;
+查询平均分80以上的每个学生的选课门数，平均分，最高分（记得打as,我这边懒得打了):select count(课程名),avg(成绩),max(成绩) from score inner join score.课程名=course.课程名 where avg(成绩)>80;
+统计每个学生的科目数，平均分，最高分：select 学号,count(科目数),avg(成绩),max(成绩) from score group by 学号;
+补充：count()统计个数，avg()平均值，sum求和，max()最大值，min() 最小值
