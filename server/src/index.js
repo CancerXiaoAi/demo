@@ -2,11 +2,13 @@ import express from 'express'
 import cors from 'cors'
 import dotenv from 'dotenv'
 import { PrismaClient } from '@prisma/client'
-import authRoutes from './routes/auth.js'
-import credentialRoutes from './routes/credentials.js'
-import { authMiddleware } from './middleware/auth.js'
+import { fileURLToPath } from 'url'
+import { dirname, join } from 'path'
 
-dotenv.config()
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = dirname(__filename)
+
+dotenv.config({ path: join(__dirname, '..', '.env') })
 
 const app = express()
 const prisma = new PrismaClient()
