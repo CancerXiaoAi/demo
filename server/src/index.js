@@ -4,6 +4,9 @@ import dotenv from 'dotenv'
 import { PrismaClient } from '@prisma/client'
 import { fileURLToPath } from 'url'
 import { dirname, join } from 'path'
+import authRoutes from './routes/auth.js'
+import credentialRoutes from './routes/credentials.js'
+import { authMiddleware } from './middleware/auth.js'
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = dirname(__filename)
