@@ -135,7 +135,8 @@
             <div
               v-for="cred in filteredCredentials"
               :key="cred.id"
-              class="bg-gray-50 p-4 md:p-6 rounded-lg hover:shadow-md transition"
+              class="bg-gray-50 p-4 md:p-6 rounded-lg hover:shadow-md transition cursor-default"
+              :title="cred.remark || ''"
             >
               <div class="flex justify-between items-start mb-4">
                 <h3 class="text-lg font-semibold text-gray-800 break-words">{{ cred.platform }}</h3>
@@ -155,25 +156,45 @@
                 </div>
               </div>
               <div class="space-y-2 text-sm">
+                <p class="text-gray-600">
+                  <span class="font-medium">基础验证:</span>
+                  <template v-if="cred.baseType === 'none'">
+                    <span class="text-gray-400 italic">未设置基础验证</span>
+                  </template>
+                  <template v-else-if="cred.baseType === 'phone'">
+                    手机号: {{ cred.baseId }}
+                  </template>
+                  <template v-else-if="cred.baseType === 'email'">
+                    邮箱: {{ cred.baseId }}
+                  </template>
+                  <template v-else-if="cred.baseType === 'software'">
+                    软件平台: {{ cred.softwareName }} - {{ cred.softwareId }}
+                  </template>
+                </p>
                 <p class="text-gray-600 break-all">
-                  <span class="font-medium">用户名:</span> {{ cred.username }}
+                  <span class="font-medium">用户名:</span> 
+                  <template v-if="cred.useBaseCredentials">
+                    <span class="text-green-600">使用基础凭证</span>
+                  </template>
+                  <template v-else>
+                    {{ cred.username }}
+                  </template>
                 </p>
                 <p class="text-gray-600">
                   <span class="font-medium">密码:</span>
-                  <span v-if="!showPasswords[cred.id]">••••••••</span>
-                  <span v-else class="break-all">{{ decryptedPasswords[cred.id] || '解密失败' }}</span>
-                  <button
-                    @click="togglePassword(cred)"
-                    class="ml-2 text-blue-600 hover:underline text-xs"
-                  >
-                    {{ showPasswords[cred.id] ? '隐藏' : '显示' }}
-                  </button>
-                </p>
-                <p v-if="cred.url" class="text-gray-600 break-all">
-                  <span class="font-medium">网址:</span>
-                  <a :href="cred.url" target="_blank" class="text-blue-600 hover:underline ml-1 break-words">
-                    {{ cred.url }}
-                  </a>
+                  <template v-if="!cred.password || cred.password.trim() === ''">
+                    <span class="text-gray-400 italic">未设置密码</span>
+                  </template>
+                  <template v-else>
+                    <span v-if="!showPasswords[cred.id]">••••••••</span>
+                    <span v-else class="break-all">{{ decryptedPasswords[cred.id] || '解密失败' }}</span>
+                    <button
+                      @click="togglePassword(cred)"
+                      class="ml-2 text-blue-600 hover:underline text-xs"
+                    >
+                      {{ showPasswords[cred.id] ? '隐藏' : '显示' }}
+                    </button>
+                  </template>
                 </p>
                 <p v-if="cred.category" class="text-gray-600">
                   <span class="font-medium">分类:</span>
@@ -184,7 +205,7 @@
                     {{ cred.category }}
                   </span>
                 </p>
-                <p v-if="cred.features" class="text-gray-600">
+                <div v-if="cred.features" class="text-gray-600">
                   <span class="font-medium">绑定平台:</span>
                   <div class="flex flex-col gap-1 mt-1">
                     <div
@@ -195,7 +216,7 @@
                       {{ feature.platform }}: {{ feature.accountName }}
                     </div>
                   </div>
-                </p>
+                </div>
                 <p class="text-gray-400 text-xs mt-2">
                   创建于: {{ formatDate(cred.createdAt) }} | 修改于: {{ formatDate(cred.updatedAt) }}
                 </p>
@@ -215,31 +236,118 @@
         <h3 class="text-xl font-bold mb-4">{{ isEditing ? '编辑账号' : '添加账号' }}</h3>
         <form @submit.prevent="handleSubmit" class="space-y-4">
           <div>
-            <label class="block text-sm font-medium text-gray-700 mb-1">平台名称</label>
+            <label class="block text-sm font-medium text-gray-700 mb-1">
+              <span class="text-red-500">*</span> 基础验证类型
+            </label>
+            <select
+              v-model="formData.baseType"
+              required
+              class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+              @change="handleBaseTypeChange"
+            >
+              <option value="phone">手机号</option>
+              <option value="email">邮箱</option>
+              <option value="software">软件平台</option>
+              <option value="none">无</option>
+            </select>
+          </div>
+
+          <div v-if="formData.baseType === 'phone' || formData.baseType === 'email'">
+            <label class="block text-sm font-medium text-gray-700 mb-1">
+              <span class="text-red-500">*</span> 基础验证ID
+            </label>
+            <input
+              v-model="formData.baseId"
+              type="text"
+              :placeholder="formData.baseType === 'phone' ? '例如：13800138000' : '例如：example@email.com'"
+              required
+              class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+            />
+          </div>
+
+          <div v-if="formData.baseType === 'software'">
+            <label class="block text-sm font-medium text-gray-700 mb-1">
+              <span class="text-red-500">*</span> 软件名称
+            </label>
+            <input
+              v-model="formData.softwareName"
+              type="text"
+              required
+              placeholder="例如：微信"
+              class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+            />
+          </div>
+
+          <div v-if="formData.baseType === 'software'">
+            <label class="block text-sm font-medium text-gray-700 mb-1">
+              <span class="text-red-500">*</span> 软件账号/ID
+            </label>
+            <input
+              v-model="formData.softwareId"
+              type="text"
+              required
+              placeholder="例如：zhangsan 或 wx123456789"
+              class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+            />
+          </div>
+
+          <div v-if="formData.baseType && formData.baseType !== 'none'">
+            <label class="block text-sm font-medium text-gray-700 mb-1">
+              <span class="text-red-500">*</span> 平台名称
+            </label>
             <input
               v-model="formData.platform"
               type="text"
               required
               class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+              placeholder="选择或输入平台名称"
             />
+
           </div>
-          <div>
-            <label class="block text-sm font-medium text-gray-700 mb-1">用户名/邮箱</label>
+
+          <div v-if="formData.baseType === 'software'" class="flex items-center gap-2">
+            <input
+              v-model="formData.useBaseCredentials"
+              type="checkbox"
+              id="useBaseCredentials"
+              class="w-4 h-4 text-blue-600 rounded"
+            />
+            <label for="useBaseCredentials" class="text-sm text-gray-700">
+              使用基础验证平台的账号密码
+            </label>
+          </div>
+
+          <div v-if="formData.baseType !== 'software' || !formData.useBaseCredentials">
+            <label class="block text-sm font-medium text-gray-700 mb-1">
+              <span class="text-red-500">*</span> 用户名
+            </label>
             <input
               v-model="formData.username"
               type="text"
               required
               class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+              placeholder="选择或输入用户名"
             />
+            <div v-if="presetUsernames.length > 0" class="flex flex-wrap gap-1 mt-2">
+              <button
+                v-for="preset in presetUsernames"
+                :key="preset"
+                type="button"
+                @click="formData.username = preset"
+                class="text-xs bg-gray-100 hover:bg-blue-100 text-gray-700 hover:text-blue-700 px-2 py-1 rounded transition"
+              >
+                + {{ preset }}
+              </button>
+            </div>
           </div>
-          <div>
+          <div v-if="formData.baseType !== 'software' || !formData.useBaseCredentials">
             <label class="block text-sm font-medium text-gray-700 mb-1">密码</label>
             <div class="relative">
               <input
                 v-model="formData.password"
                 :type="showFormPassword ? 'text' : 'password'"
-                required
                 class="w-full px-4 py-2 pr-10 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+                placeholder="请输入密码"
               />
               <button
                 type="button"
@@ -255,15 +363,6 @@
                 </svg>
               </button>
             </div>
-          </div>
-          <div>
-            <label class="block text-sm font-medium text-gray-700 mb-1">网址（可选）</label>
-            <input
-              v-model="formData.url"
-              type="text"
-              class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
-              placeholder="例如: www.example.com"
-            />
           </div>
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-1">分类</label>
@@ -282,31 +381,19 @@
               </datalist>
             </div>
           </div>
-          <div>
-            <label class="block text-sm font-medium text-gray-700 mb-1">绑定的其他平台（可选）</label>
-            <div class="space-y-2 mb-2">
+          <div class="space-y-2">
+            <label class="block text-sm font-medium text-gray-700">绑定的其他平台（可选）</label>
+            <div v-if="formData.features.length > 0" class="flex flex-wrap gap-2">
               <div
                 v-for="(feature, index) in formData.features"
                 :key="index"
-                class="flex items-center gap-2 bg-blue-50 px-3 py-2 rounded-lg"
+                class="flex items-center gap-1 bg-blue-100 text-blue-800 px-3 py-1.5 rounded-full text-sm"
               >
-                <input
-                  v-model="feature.platform"
-                  type="text"
-                  class="flex-1 px-2 py-1 border border-gray-300 rounded text-sm"
-                  placeholder="平台名称"
-                />
-                <span class="text-gray-400">:</span>
-                <input
-                  v-model="feature.accountName"
-                  type="text"
-                  class="flex-1 px-2 py-1 border border-gray-300 rounded text-sm"
-                  placeholder="账号名"
-                />
+                <span>{{ feature.platform }}: {{ feature.accountName }}</span>
                 <button
                   type="button"
                   @click="removeFeature(index)"
-                  class="text-red-500 hover:text-red-700"
+                  class="ml-1 text-blue-600 hover:text-blue-900 w-5 h-5 flex items-center justify-center"
                 >
                   ×
                 </button>
@@ -316,31 +403,29 @@
               <input
                 v-model="newFeature.platform"
                 type="text"
-                class="w-1/2 px-3 py-2 border border-gray-300 rounded-lg text-sm"
+                class="flex-1 px-3 py-2 border border-gray-300 rounded-lg text-sm"
                 placeholder="平台名称"
               />
               <input
                 v-model="newFeature.accountName"
                 @keydown.enter.prevent="addFeature"
                 type="text"
-                class="w-1/2 px-3 py-2 border border-gray-300 rounded-lg text-sm"
+                class="flex-1 px-3 py-2 border border-gray-300 rounded-lg text-sm"
                 placeholder="账号名，回车添加"
               />
             </div>
-            <div class="mt-2">
-              <p class="text-xs text-gray-500">常用平台：</p>
-              <div class="flex flex-wrap gap-1 mt-1">
-                <button
-                  v-for="preset in presetFeatures"
-                  :key="preset"
-                  type="button"
-                  @click="addPresetFeature(preset)"
-                  class="text-xs bg-gray-100 hover:bg-gray-200 px-2 py-1 rounded"
-                >
-                  + {{ preset }}
-                </button>
-              </div>
-            </div>
+
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">备注（可选）</label>
+            <textarea
+              v-model="formData.remark"
+              maxlength="100"
+              rows="2"
+              class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none resize-none"
+              placeholder="最多100字"
+            ></textarea>
+            <p class="text-xs text-gray-400 text-right mt-1">{{ formData.remark?.length || 0 }}/100</p>
           </div>
           <div class="flex gap-4">
             <button
@@ -478,15 +563,21 @@ const newCategoryName = ref('')
 const isEditing = ref(false)
 const editingId = ref(null)
 const formData = ref({
+  baseType: '',
+  baseId: '',
+  softwareName: '',
+  softwareId: '',
   platform: '',
   username: '',
   password: '',
-  url: '',
   category: '',
-  features: []
+  features: [],
+  remark: ''
 })
 const newFeature = ref({ platform: '', accountName: '' })
 const presetFeatures = ['微信', '支付宝', '抖音', '淘宝', '京东', 'QQ', '微博', '知乎']
+const presetPlatforms = ['微信', '支付宝', '抖音', '淘宝', '京东', 'QQ', '微博', '知乎', '邮箱', '手机号']
+const presetUsernames = []
 const showPasswords = ref({})
 const decryptedPasswords = ref({})
 const showFormPassword = ref(false)
@@ -559,12 +650,17 @@ const openAddModal = () => {
   isEditing.value = false
   editingId.value = null
   formData.value = {
+    baseType: '',
+    baseId: '',
+    softwareName: '',
+    softwareId: '',
+    useBaseCredentials: false,
     platform: '',
     username: '',
     password: '',
-    url: '',
     category: selectedCategory.value || '',
-    features: []
+    features: [],
+    remark: ''
   }
   newFeature.value = { platform: '', accountName: '' }
   showFormPassword.value = false
@@ -584,12 +680,17 @@ const openEditModal = (cred) => {
     }
   }
   formData.value = {
+    baseType: cred.baseType || '',
+    baseId: cred.baseId || '',
+    softwareName: cred.softwareName || '',
+    softwareId: cred.softwareId || '',
+    useBaseCredentials: cred.useBaseCredentials || false,
     platform: cred.platform,
     username: cred.username,
     password: cred.password,
-    url: cred.url || '',
     category: cred.category || '',
-    features: features
+    features: features,
+    remark: cred.remark || ''
   }
   newFeature.value = { platform: '', accountName: '' }
   showFormPassword.value = false
@@ -602,6 +703,12 @@ const closeModal = () => {
   editingId.value = null
 }
 
+const handleBaseTypeChange = () => {
+  formData.value.baseId = ''
+  formData.value.softwareName = ''
+  formData.value.softwareId = ''
+}
+
 const handleBackdropClick = (type) => {
   if (type === 'add') closeModal()
   else if (type === 'category') showCategoryModal.value = false
@@ -611,28 +718,39 @@ const handleBackdropClick = (type) => {
 const handleSubmit = async () => {
   console.log('Submitting form data:', formData.value)
   try {
+    if (formData.value.baseType === 'software') {
+      if (!formData.value.softwareName || !formData.value.softwareId) {
+        alert('软件平台类型需要填写软件名称和软件账号/ID')
+        return
+      }
+    }
+    
     const duplicateCredential = credentialStore.credentials.find(
-      c => c.username === formData.value.username && c.id !== editingId.value
+      c => c.username === formData.value.username && c.platform === formData.value.platform && c.id !== editingId.value
     )
     if (duplicateCredential) {
-      alert('账号名冲突，不能添加')
+      alert('同一平台下账号名已存在，不能添加')
       return
     }
 
     const validFeatures = formData.value.features.filter(f => f.platform.trim())
 
-    const data = {
+    const submitData = {
       ...formData.value,
+      baseId: formData.value.baseType === 'software' 
+        ? `${formData.value.softwareName}:${formData.value.softwareId}` 
+        : formData.value.baseId,
       features: validFeatures.length > 0 ? JSON.stringify(validFeatures) : null
     }
-    console.log('Data to submit:', data)
-    if (data.url && !data.url.match(/^https?:\/\//i)) {
-      data.url = 'http://' + data.url
+
+    if (formData.value.baseType === 'software' && formData.value.useBaseCredentials) {
+      submitData.username = formData.value.softwareId
     }
+    console.log('Data to submit:', submitData)
     if (isEditing.value) {
-      await credentialStore.updateCredential(editingId.value, data)
+      await credentialStore.updateCredential(editingId.value, submitData)
     } else {
-      await credentialStore.addCredential(data)
+      await credentialStore.addCredential(submitData)
     }
     closeModal()
     window.location.reload()
@@ -767,5 +885,15 @@ const removeFeature = (index) => {
 const deleteCategory = (name) => {
   if (confirm(`确定要删除分类"${name}"吗？`)) {
   }
+}
+
+const getBaseTypeName = (type) => {
+  const typeMap = {
+    phone: '手机号',
+    email: '邮箱',
+    software: '软件平台',
+    none: '无'
+  }
+  return typeMap[type] || type
 }
 </script>

@@ -4,10 +4,21 @@ import axios from 'axios'
 const API_URL = '/api'
 
 export const useAuthStore = defineStore('auth', {
-  state: () => ({
-    user: JSON.parse(localStorage.getItem('user') || 'null'),
-    token: localStorage.getItem('token') || null
-  }),
+  state: () => {
+    let user = null
+    try {
+      const storedUser = localStorage.getItem('user')
+      if (storedUser && storedUser !== 'null') {
+        user = JSON.parse(storedUser)
+      }
+    } catch (e) {
+      console.warn('Failed to parse user from localStorage:', e)
+    }
+    return {
+      user,
+      token: localStorage.getItem('token') || null
+    }
+  },
   getters: {
     isAuthenticated: (state) => !!state.token
   },
@@ -15,7 +26,7 @@ export const useAuthStore = defineStore('auth', {
     async login(username, password) {
       const response = await axios.post(`${API_URL}/auth/login`, { username, password })
       this.token = response.data.token
-      this.user = response.data.user
+      this.user = { id: response.data.userId, username: response.data.username }
       localStorage.setItem('token', this.token)
       localStorage.setItem('user', JSON.stringify(this.user))
       return response.data

@@ -71,7 +71,7 @@ export const useCredentialStore = defineStore('credential', {
     },
     async permanentDeleteCredential(id) {
       const token = localStorage.getItem('token')
-      await axios.delete(`${API_URL}/credentials/${id}/permanent`, {
+      await axios.delete(`${API_URL}/credentials/${id}/force`, {
         headers: { Authorization: `Bearer ${token}` }
       })
       this.trashCredentials = this.trashCredentials.filter(c => c.id !== id)

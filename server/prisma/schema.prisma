@@ -11,6 +11,7 @@ model User {
   id        Int         @id @default(autoincrement())
   username  String      @unique
   password  String
+  email     String?     @unique
   createdAt DateTime    @default(now())
   updatedAt DateTime    @updatedAt
   credentials Credential[]
@@ -18,12 +19,17 @@ model User {
 
 model Credential {
   id        Int      @id @default(autoincrement())
-  platform  String
-  username  String
-  password  String
-  url       String?
+  platform  String?
+  username  String?
+  password  String?
   category  String?
   features  String?
+  baseType  String
+  baseId    String?
+  softwareName String?
+  softwareId String?
+  useBaseCredentials Boolean @default(false)
+  remark    String?
   userId    Int
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   createdAt DateTime @default(now())
